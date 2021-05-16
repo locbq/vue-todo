@@ -1,20 +1,46 @@
 <template>
-  <div class="card">
-    <h3 class="text">{{todo.text}}</h3>
-    <button class="delete-btn" @click="handleClick">x</button>
+  <div>
+    <div class="card" v-show="idEdited !== todo.id">
+      <h3 @click="editTodo" class="text">{{todo.text}}</h3>
+      <button class="delete-btn" @click="handleClick">x</button>
+    </div>
+    <TodoEdit v-show="idEdited"
+        :todo="todo"
+        :idEdited="idEdited"
+        :nameAfterEdited="nameAfterEdited"
+        @update-todo="updateTodo"
+    />
   </div>
 </template>
 
 <script>
+  import TodoEdit from "./TodoEdit";
+
   export default {
     name: 'TodoItem',
+    components: {
+      TodoEdit,
+    },
+    data() {
+      return {
+        idEdited: "",
+        nameAfterEdited: "",
+      }
+    },
     props: {
       todo: Object
     },
     methods: {
       handleClick() {
         this.$emit('delete-todo', this.todo.id);
-      }
+      },
+      editTodo() {
+        this.idEdited = this.todo.id;
+        this.nameAfterEdited = this.todo.text;
+      },
+      updateTodo(id, text) {
+        this.$emit('update-todo', id, text);
+      },
     }
   }
 </script>

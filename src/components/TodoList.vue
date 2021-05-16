@@ -7,6 +7,7 @@
     <TodoItem 
       :todo="todo"
       @delete-todo="deleteTodo"
+      @update-todo="updateTodo"
     />
   </div>
 </template>
@@ -32,6 +33,10 @@
       },
       deleteTodo(id) {
         this.todos = this.todos.filter((todo) => todo.id !== id)
+      },
+      updateTodo(id, text) {
+        let index = this.todos.findIndex((obj => obj.id === id));
+        this.todos[index].text = text;
       }
     }
   }
