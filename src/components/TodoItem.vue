@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <div class="card" v-show="idEdited !== todo.id">
+  <div class="mt-20">
+    <div class="card" v-show="idEditing !== todo.id">
       <h3 @click="editTodo" class="text">{{todo.text}}</h3>
       <button class="delete-btn" @click="handleClick">x</button>
     </div>
-    <TodoEdit v-show="idEdited"
+    <TodoEdit v-if="idEditing"
         :todo="todo"
-        :idEdited="idEdited"
-        :nameAfterEdited="nameAfterEdited"
+        :idEditing="idEditing"
         @update-todo="updateTodo"
     />
   </div>
@@ -23,23 +22,23 @@
     },
     data() {
       return {
-        idEdited: "",
-        nameAfterEdited: "",
+        idEditing: "",
       }
     },
     props: {
-      todo: Object
+      todo: Object,
     },
     methods: {
       handleClick() {
         this.$emit('delete-todo', this.todo.id);
       },
       editTodo() {
-        this.idEdited = this.todo.id;
-        this.nameAfterEdited = this.todo.text;
+        this.idEditing = this.todo.id;
+        this.$emit('disable-form-add', true);
       },
       updateTodo(id, text) {
         this.$emit('update-todo', id, text);
+        this.idEditing = "";
       },
     }
   }
@@ -72,4 +71,7 @@
     font-weight: bold;
   }
 
+  .mt-20 {
+    margin-top: 20px;
+  }
 </style>

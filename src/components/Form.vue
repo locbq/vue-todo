@@ -6,10 +6,13 @@
       name="text" 
       placeholder="Enter todo"
       v-model="text"
+      :disabled="isEdited"
     />
     <input 
       type="submit" 
-      value="Add" 
+      value="Add"
+      :disabled="isEdited"
+      :class="{ 'cursor-no-drop': isEdited }"
     />
   </form>
   <p 
@@ -24,6 +27,9 @@
 
   export default {
     name: 'Form',
+    props: {
+        isEdited: Boolean,
+    },
     data() {
       return {
         text: '',
@@ -40,6 +46,7 @@
           const newTodo = {
             id: uuidv4(),
             text: this.text,
+            isShow: true,
           }
           this.$emit('on-submit', newTodo);
           this.text = '';
@@ -77,4 +84,7 @@
     color: red;
   }
 
+  .cursor-no-drop {
+    cursor: no-drop !important;
+  }
 </style>

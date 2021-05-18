@@ -2,9 +2,9 @@
     <div class="edit-card">
         <form @submit="handleUpdateSubmit">
             <input
-                    type="text"
-                    placeholder="Edit todo"
-                    v-model="todoName"
+                type="text"
+                placeholder="Edit todo"
+                v-model="todoName"
             />
             <input type="submit" value="Update" />
         </form>
@@ -20,48 +20,52 @@
         data() {
             return {
                 errorMessage: '',
-                todoName: this.nameAfterEdited,
+                todoName: this.todo.text,
             }
         },
         props: {
             todo: Object,
-            idEdited: String,
-            nameAfterEdited: String,
+            idEditing: String,
         },
         methods: {
             handleUpdateSubmit(event) {
                 event.preventDefault();
-                console.log(this.idEdited, this.todoName);
+                if (this.todoName === '') {
+                    this.errorMessage = 'Please enter a todo';
+                } else {
+                    this.errorMessage = '';
+                    this.$emit('update-todo', this.idEditing, this.todoName);
+                    this.todoName = '';
+                }
             }
-        }
+        },
     }
 </script>
 
 <style scoped>
-    .card {
+    form {
         width: 100%;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 10px 0;
-        background: #d6d6d6;
     }
 
-    .card .text {
-        color: #333;
-        padding-left: 15px;
+    form input[type="text"] {
+        width: 100%;
+        height: 40px;
+        margin-right: 20px;
     }
 
-    .card .delete-btn {
-        background: red;
+    form input[type="submit"] {
+        background: green;
         color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 15px;
-        border-color: red;
-        cursor: pointer;
         font-weight: bold;
+        outline: none;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        text-transform: uppercase;
     }
 
+    p {
+        color: red;
+    }
 </style>
