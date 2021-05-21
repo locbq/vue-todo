@@ -1,28 +1,56 @@
 <template>
   <div class="container">
-    <h1>Todo List</h1>
-    <TodoList/>
+    <div class="col-12">
+        <div id="nav">
+          <router-link :to="{ name: 'Todo List' }" class="btn btn-info">
+            Home
+          </router-link>
+           |
+          <router-link :to="{ name: 'Add Todo' }" class="btn btn-info">
+            Add Todo
+          </router-link>
+        </div>
+    </div>
+    <div class="content">
+      <router-view
+        :todos="todos"
+        @add-todo="addTodo"
+        @delete-todo="deleteTodo"
+        @update-todo="updateTodo"
+        @search-todo="searchTodo" />
+    </div>
   </div>
 </template>
 
 <script>
-import TodoList from './components/TodoList'
-
 export default {
   name: 'App',
-  components: {
-    TodoList,
+  data() {
+    return {
+      todos: [],
+    }
+  },
+  methods: {
+    addTodo(todo) {
+      this.todos = [...this.todos, todo]
+    },
+    deleteTodo(id) {
+      this.todos = this.todos.filter((todo) => todo.id !== id)
+    },
+    updateTodo(index, text) {
+      this.todos[index].text = text;
+    },
+    searchTodo(val) {
+      this.todos = this.todos.map(obj => {
+        obj.isShow = obj.text.includes(val);
+        return obj;
+      });
+    }
   }
 }
 </script>
 
 <style>
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
   .container {
     width: 40%;
     margin: 0 auto;

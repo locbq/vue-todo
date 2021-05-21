@@ -1,4 +1,5 @@
 <template>
+  <h1>Add Todo</h1>
   <form @submit="handleSubmit">
     <input 
       id="text" 
@@ -6,13 +7,10 @@
       name="text" 
       placeholder="Enter todo"
       v-model="text"
-      :disabled="isEdited"
     />
     <input 
       type="submit" 
       value="Add"
-      :disabled="isEdited"
-      :class="{ 'cursor-no-drop': isEdited }"
     />
   </form>
   <p 
@@ -24,12 +22,10 @@
 
 <script>
   import { v4 as uuidv4 } from 'uuid';
+  import router from "../router";
 
   export default {
     name: 'Form',
-    props: {
-        isEdited: Boolean,
-    },
     data() {
       return {
         text: '',
@@ -48,8 +44,8 @@
             text: this.text,
             isShow: true,
           }
-          this.$emit('on-submit', newTodo);
-          this.text = '';
+          this.$emit('add-todo', newTodo);
+          router.push('/');
         }
       },
     }

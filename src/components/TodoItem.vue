@@ -1,44 +1,24 @@
 <template>
   <div class="mt-20">
-    <div class="card" v-show="idEditing !== todo.id">
-      <h3 @click="editTodo" class="text">{{todo.text}}</h3>
+    <div class="card">
+      <h3 class="text">{{ todo.text }}</h3>
+      <router-link :to="{ name: 'Edit Todo', params: { todoId: todo.id } }" class="btn btn-info right-side">
+        Edit Todo
+      </router-link>
       <button class="delete-btn" @click="handleClick">x</button>
     </div>
-    <TodoEdit v-if="idEditing"
-        :todo="todo"
-        :idEditing="idEditing"
-        @update-todo="updateTodo"
-    />
   </div>
 </template>
 
 <script>
-  import TodoEdit from "./TodoEdit";
-
   export default {
     name: 'TodoItem',
-    components: {
-      TodoEdit,
-    },
-    data() {
-      return {
-        idEditing: "",
-      }
-    },
     props: {
       todo: Object,
     },
     methods: {
       handleClick() {
         this.$emit('delete-todo', this.todo.id);
-      },
-      editTodo() {
-        this.idEditing = this.todo.id;
-        this.$emit('disable-form-add', true);
-      },
-      updateTodo(id, text) {
-        this.$emit('update-todo', id, text);
-        this.idEditing = "";
       },
     }
   }
@@ -57,6 +37,7 @@
   .card .text {
     color: #333;
     padding-left: 15px;
+    width: 75%;
   }
 
   .card .delete-btn {
@@ -73,5 +54,11 @@
 
   .mt-20 {
     margin-top: 20px;
+  }
+
+  .right-side {
+    text-align: right;
+    width: 25%;
+    margin-right: 10px;
   }
 </style>

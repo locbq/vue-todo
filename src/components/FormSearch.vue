@@ -5,7 +5,6 @@
             type="text"
             placeholder="Search todo"
             v-model="search"
-            :disabled="isEdited"
             class="text-align-center"
         />
     </label>
@@ -14,9 +13,6 @@
 <script>
     export default {
         name: 'FormSearch',
-        props: {
-            isEdited: Boolean,
-        },
         data() {
             return {
                 'search': '',
