@@ -1,4 +1,5 @@
 <template>
+    <h1>Edit Todo</h1>
     <div class="edit-card">
         <form @submit="handleUpdateSubmit">
             <input
@@ -15,17 +16,23 @@
 </template>
 
 <script>
+    import router from "../router";
     export default {
         name: 'TodoEdit',
         data() {
             return {
                 errorMessage: '',
-                todoName: this.todo.text,
+                todoEdit: Object,
+                todoName: '',
+                index: '',
             }
         },
         props: {
-            todo: Object,
-            idEditing: String,
+            todos: Array,
+        },
+        created: function () {
+            this.index = this.todos.findIndex((obj => obj.id === this.$route.params.todoId));
+            this.todoName = this.todos[this.index].text;
         },
         methods: {
             handleUpdateSubmit(event) {
@@ -34,8 +41,8 @@
                     this.errorMessage = 'Please enter a todo';
                 } else {
                     this.errorMessage = '';
-                    this.$emit('update-todo', this.idEditing, this.todoName);
-                    this.todoName = '';
+                    this.$emit('update-todo', this.index, this.todoName);
+                    router.push('/');
                 }
             }
         },
